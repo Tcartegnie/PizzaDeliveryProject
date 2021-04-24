@@ -12,9 +12,17 @@ public class EntityState : MonoBehaviour
         ActualPV = PVmax;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   public void TakeHit()
+	{
+        ActualPV -= 1;
+        CheckPV();
+	}
+
+    public void CheckPV()
+	{
+        if(ActualPV <= 0)
+		{
+            Destroy(gameObject);
+		}
+	}
 }
