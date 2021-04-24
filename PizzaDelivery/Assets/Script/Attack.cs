@@ -10,6 +10,7 @@ public class Attack : MonoBehaviour
     public TimerController timer;
     public Grid grid;
     public LayerMask RayCastMask;
+    public bool CanAttack = true;
 	private void Update()
 	{
 		if(Input.GetKeyDown(KeyCode.Space))
@@ -20,7 +21,10 @@ public class Attack : MonoBehaviour
 
 	public void CallAttack()
 	{
-        CheckCase();
+        if (CanAttack)
+        {
+            CheckCase();
+        }
     }
 
     void CheckCase() 
@@ -30,9 +34,9 @@ public class Attack : MonoBehaviour
           
         if(Physics.Raycast(ray,out HitInfo,10f,RayCastMask))
 		{
-            if (HitInfo.transform.GetComponentInParent<Attack>() != null)
+            if (HitInfo.transform.GetComponentInParent<EntityState>() != null)
             {
-               Destroy(HitInfo.transform.gameObject);
+                HitInfo.transform.GetComponentInParent<EntityState>().TakeHit();
             }
 		}
 	}
