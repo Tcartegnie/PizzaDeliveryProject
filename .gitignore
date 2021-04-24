@@ -58,3 +58,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+PizzaDelivery/Library/Artifacts/
+PizzaDelivery/Library/PackageCache/
+PizzaDelivery/Library/ShaderCache/
+PizzaDelivery/Temp/
