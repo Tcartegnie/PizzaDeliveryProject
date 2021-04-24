@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5498160166935612767}
   - component: {fileID: 5498160166935612765}
   - component: {fileID: 5498160166935612764}
+  - component: {fileID: 895032948}
   m_Layer: 8
   m_Name: AlienMove
   m_TagString: Untagged
@@ -81,6 +82,24 @@ MonoBehaviour:
   RayCastMask:
     serializedVersion: 2
     m_Bits: 512
+  CanAttack: 1
+  target: {fileID: 0}
+  BeatCount: 0
+  BeatCountMax: 0
+--- !u!114 &895032948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5498160166935612760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631ac6a321820b4499a017bf7b6b0135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PVmax: 3
+  ActualPV: 0
 --- !u!1 &5498160167895520556
 GameObject:
   m_ObjectHideFlags: 0

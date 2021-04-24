@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2548184233661784184}
   - component: {fileID: 2548184233661784191}
   - component: {fileID: 2548184233661784190}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 2548184234020074865}
   - component: {fileID: 2548184234020074864}
   - component: {fileID: 2548184234020074871}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,8 +199,9 @@ GameObject:
   - component: {fileID: 2548184234412957442}
   - component: {fileID: 2548184234412957443}
   - component: {fileID: 2548184234412957452}
-  - component: {fileID: 2548184234412957453}
-  m_Layer: 0
+  - component: {fileID: 1409548439}
+  - component: {fileID: 1409548440}
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 0}
   Position: {x: 0, y: 0}
---- !u!114 &2548184234412957453
+--- !u!114 &1409548439
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,7 +267,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 2548184234412957441}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d324bfa5875d20438b1703d30f5ec4d, type: 3}
+  m_Script: {fileID: 11500000, guid: 631ac6a321820b4499a017bf7b6b0135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PVmax: 10
+  ActualPV: 0
+--- !u!114 &1409548440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2548184234412957441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61efca37f4063894fbdec17e183f3c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   entity: {fileID: 0}
@@ -274,4 +289,6 @@ MonoBehaviour:
   grid: {fileID: 0}
   RayCastMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 512
+  CanAttack: 1
+  CoolDownAttack: 0.4

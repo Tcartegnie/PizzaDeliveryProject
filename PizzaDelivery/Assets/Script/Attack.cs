@@ -11,13 +11,7 @@ public class Attack : MonoBehaviour
     public Grid grid;
     public LayerMask RayCastMask;
     public bool CanAttack = true;
-	private void Update()
-	{
-		if(Input.GetKeyDown(KeyCode.Space))
-		{
-            CallAttack();
-		}
-	}
+
 
 	public void CallAttack()
 	{
@@ -37,6 +31,7 @@ public class Attack : MonoBehaviour
             if (HitInfo.transform.GetComponentInParent<EntityState>() != null)
             {
                 HitInfo.transform.GetComponentInParent<EntityState>().TakeHit();
+                CanAttack = false;
             }
 		}
 	}

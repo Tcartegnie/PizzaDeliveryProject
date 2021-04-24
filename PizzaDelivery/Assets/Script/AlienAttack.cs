@@ -4,26 +4,35 @@ using UnityEngine;
 
 public class AlienAttack : Attack
 {
-
-    int BeatCount;
+    public Transform target;
+    public int BeatCount;
+    public int BeatCountMax;
     void Start()
     {
         timer.onBeat += CallAttack;
         timer.onBeat += AddBeat;
+        CanAttack = false;
     }
+
+
+    
+
 
     public void AddBeat()
 	{
-        if(BeatCount < 3)
-		{
-            BeatCount++;
-		}
+        if (Vector3.Distance(target.position, transform.position) <= 1)
+        {
+            if (BeatCount < BeatCountMax)
+            {
+                BeatCount++;
+            }
 
-        if(BeatCount >= 3)
-		{
-            CanAttack = true;
-            BeatCount = 0;
-		}
+            if (BeatCount >= 3)
+            {
+                CanAttack = true;
+                BeatCount = 0;
+            }
+        }
        
 	}
 
