@@ -287,13 +287,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &895032947 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5498160166935612760, guid: 7be1fcaa462d08e42b59125a1d1aca48,
+    type: 3}
+  m_PrefabInstance: {fileID: 5498160167151162155}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &895032948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895032947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631ac6a321820b4499a017bf7b6b0135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PVmax: 3
+  ActualPV: 0
 --- !u!114 &895032950 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5498160166935612765, guid: 7be1fcaa462d08e42b59125a1d1aca48,
     type: 3}
   m_PrefabInstance: {fileID: 5498160167151162155}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 895032947}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44f5caa84448a1f4e91e5f1af317c39e, type: 3}
@@ -479,12 +499,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1409548437 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2548184234412957441, guid: a2c3222c1602ae24a87f139b1913577e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2548184233137627028}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1409548438 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2548184234412957442, guid: a2c3222c1602ae24a87f139b1913577e,
     type: 3}
   m_PrefabInstance: {fileID: 2548184233137627028}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1409548439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409548437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631ac6a321820b4499a017bf7b6b0135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PVmax: 10
+  ActualPV: 0
 --- !u!1 &1530670950
 GameObject:
   m_ObjectHideFlags: 0
