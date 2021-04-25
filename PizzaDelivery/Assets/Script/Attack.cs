@@ -16,7 +16,7 @@ public class Attack : MonoBehaviour
 
 	public void CallAttack()
 	{
-        if (CanAttack && OnBeat)
+        if (CanAttack && timer.IsNearBeat())
         {
             CheckCase();
         }
@@ -32,7 +32,6 @@ public class Attack : MonoBehaviour
             if (HitInfo.transform.GetComponentInParent<EntityState>() != null)
             {
                 HitInfo.transform.GetComponentInParent<EntityState>().TakeHit();
-                OnBeat = false;
             }
 		}
 	}

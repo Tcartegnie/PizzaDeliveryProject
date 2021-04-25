@@ -7,15 +7,15 @@ public class TimerController : MonoBehaviour
 
     public float songposition;
     public float songpositioninBeats;
-    public int LastsongpositioninBeats;
     public float OffBeatOffset;
-    public float CurrentBeat;
+    public float CurrentBeatTimer;
 
     public float dspsongTime;
     public float InputCoolDown;
 
     public float SecPerBeat;
     public float SongBPM;
+    public float BeatMargin;
     public AudioSource Music;
 
     public delegate void Beat();
@@ -25,6 +25,8 @@ public class TimerController : MonoBehaviour
     public RectTransform Startrect;
 
     public BeatDisplay beatDisplay;
+
+    public RectTransform BluePicture;
 
     public bool GameStart = false;
     public float GetPositonInSong()
@@ -51,17 +53,17 @@ public class TimerController : MonoBehaviour
 
     public void StartMusic()
 	{
-        SecPerBeat = GetBeatPerSecond();
+        SecPerBeat = GetSecPerBeat();
         dspsongTime = (float)AudioSettings.dspTime;
         songposition = 0;
         songpositioninBeats = 0;
         InputCoolDown = 0;
         GameStart = true;
         Music.Play();
-        beatDisplay.InstantiateBeat();
+       // beatDisplay.InstantiateBeat();
     }
 
-    public float GetBeatPerSecond()
+    public float GetSecPerBeat()
 	{
       return 60f / SongBPM;
     }
@@ -76,13 +78,7 @@ public class TimerController : MonoBehaviour
                 StartMusic();
             }
 		}
-    }
 
-
-
-
-    private void FixedUpdate()
-    {
         if (GM.CanPlay && GameStart)
         {
             ComputeMusicPosition();
@@ -91,17 +87,31 @@ public class TimerController : MonoBehaviour
                 Metronome();
             }
         }
+
+        if(IsNearBeat())
+		{
+            BluePicture.gameObject.SetActive(true);
+        }
+        else
+		{
+            BluePicture.gameObject.SetActive(false);
+        }
     }
+
 
     public void Metronome()
 	{       
-            (CurrentBeat) += Time.deltaTime;
-            if (CurrentBeat >= SecPerBeat)
+            (CurrentBeatTimer) -= Time.deltaTime;
+            if (CurrentBeatTimer <= 0f)
             {
                 IsBeating();
-                CurrentBeat = 0;
+                CurrentBeatTimer = SecPerBeat;
             }
-            LastsongpositioninBeats = (int)songpositioninBeats;
+    }
+
+    public bool IsNearBeat()
+    {
+        return CurrentBeatTimer <= BeatMargin && CurrentBeatTimer >= GetSecPerBeat() - BeatMargin;
     }
 
     void ComputeMusicPosition()

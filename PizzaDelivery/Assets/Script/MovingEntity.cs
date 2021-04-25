@@ -17,8 +17,6 @@ public class MovingEntity : MonoBehaviour
     bool CanMove;
     public bool Beat;
     public TimerController controller;
-	private float CurrentCoolDownMove;
-    public float CoolDownMove;
 	// Start is called before the first frame update
 	public virtual void Start()
 	{
@@ -45,22 +43,10 @@ public class MovingEntity : MonoBehaviour
 
     public virtual void MoveCharacter(int x, int z, float rotate)
 	{
-        if (Gm.CanPlay && CanMove && Beat)
+        if (Gm.CanPlay && CanMove)
         {
             Move(x, z);
             RotatePerso(rotate);
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (CurrentCoolDownMove > 0)
-        {
-            CurrentCoolDownMove -= Time.deltaTime;
-        }
-        else
-        {
-            Beat = false;
         }
     }
 
@@ -93,7 +79,6 @@ public class MovingEntity : MonoBehaviour
             transform.position = grid.GetCasePosition(CurrentXPosition, CurrentZPosition);
             grid.SetCaseAccesibility(CurrentXPosition, CurrentZPosition, false);
         }
-        Beat = false;
     }
 
     public void RotatePerso(float Degres)
@@ -104,8 +89,6 @@ public class MovingEntity : MonoBehaviour
     public void OnBeat()
 	{
         Beat = true;
-        CurrentCoolDownMove = CoolDownMove;
-
     }
 
     public virtual void OnDeath()

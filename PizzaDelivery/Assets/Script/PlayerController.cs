@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
 
 	public void MoveCharacter(int x, int z, float rotate)
 	{
-        if (InputTimer > 0)
+        if (timerctrl.IsNearBeat())
         {
             Sound.PlayOneShot(VictorySound);
             entity.MoveCharacter(x, z, rotate);

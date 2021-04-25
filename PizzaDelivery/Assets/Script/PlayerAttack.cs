@@ -6,10 +6,11 @@ public class PlayerAttack : Attack
 {
 	public float CoolDownAttack;
     float CurrentCoolDownAttack;
+	public AudioSource HitSource;
+	public AudioClip HitClip;
 
     void Start()
     {
-		timer.onBeat += AttackCall;
         OnBeat = true;
     }
 
@@ -17,25 +18,13 @@ public class PlayerAttack : Attack
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			CallAttack();
+			if (timer.IsNearBeat())
+			{
+				CallAttack();
+				HitSource.PlayOneShot(HitClip);
+			}
 		}
 	}
 
-	private void FixedUpdate()
-	{
-		if(CurrentCoolDownAttack > 0)
-		{
-			CurrentCoolDownAttack -= Time.deltaTime;
-		}
-		else
-		{
-			OnBeat = false;
-		}
-	}
 
-	void AttackCall()
-	{
-		OnBeat = true;
-		CurrentCoolDownAttack = CoolDownAttack;
-	}
 }

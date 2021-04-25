@@ -262,8 +262,11 @@ MonoBehaviour:
   RayCastMask:
     serializedVersion: 2
     m_Bits: 256
+  OnBeat: 1
   CanAttack: 1
-  CoolDownAttack: 0.4
+  CoolDownAttack: 0.6
+  HitSource: {fileID: 0}
+  HitClip: {fileID: 8300000, guid: 1fe0c11f9b506cc4cace479cf4ade1e2, type: 3}
 --- !u!114 &348831302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,6 +284,8 @@ MonoBehaviour:
   CurrentZPosition: 0
   StartPosition: {x: 0, y: 0}
   Gm: {fileID: 0}
+  Beat: 0
+  controller: {fileID: 0}
 --- !u!114 &348831303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,4 +302,5 @@ MonoBehaviour:
   ActualPV: 0
   attack: {fileID: 1409548440}
   move: {fileID: 348831302}
+  grid: {fileID: 0}
   GM: {fileID: 0}

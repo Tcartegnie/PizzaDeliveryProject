@@ -29,18 +29,18 @@ public class BeatDisplay : MonoBehaviour
 
     public void InstantiateBeat()
 	{
-       
-            controller.onBeat += OnBeat;
-            spb = controller.GetBeatPerSecond();
-            for (int i = 0; i < 2; i++)
-            {
-                GameObject GO = Instantiate(BeatLine, Rects[i]);
-                GO.GetComponent<RectTransform>().pivot.Set(0.5f, 0);
-                GO.GetComponent<RectTransform>().rect.Set(0, 0, 0, 0);
-                StartCoroutine(MoveLine(GO.transform, Rects[i], BeatRect));
-            }
-      
-    }
+
+		controller.onBeat += OnBeat;
+		spb = controller.BeatMargin;
+		for (int i = 0; i < 2; i++)
+		{
+			GameObject GO = Instantiate(BeatLine, Rects[i]);
+			GO.GetComponent<RectTransform>().pivot.Set(0.5f, 0);
+			GO.GetComponent<RectTransform>().rect.Set(0, 0, 0, 0);
+			StartCoroutine(MoveLine(GO.transform, Rects[i], BeatRect));
+		}
+
+	}
 
     IEnumerator MoveLine(Transform GO,Transform Line,Transform destination)
 	{

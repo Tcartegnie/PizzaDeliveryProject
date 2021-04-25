@@ -290,17 +290,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   songposition: 0
   songpositioninBeats: 0
-  LastsongpositioninBeats: 0
   OffBeatOffset: 0
-  CurrentBeat: 0
+  CurrentBeatTimer: 0
   dspsongTime: 0
   InputCoolDown: 0
   SecPerBeat: 0
-  SongBPM: 100
+  SongBPM: 90
+  BeatMargin: 0.5
   Music: {fileID: 1530670951}
   GM: {fileID: 1115003620}
   Startrect: {fileID: 492514621}
   beatDisplay: {fileID: 233173357}
+  BluePicture: {fileID: 282958472}
   GameStart: 0
 --- !u!1 &233173355
 GameObject:
@@ -348,7 +349,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 233173355}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c078394b12dc7a469f2adbdfef06096, type: 3}
   m_Name: 
@@ -1264,7 +1265,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 62c7a54c17e92d1458d8356b7cc74064, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 90461de8d4a65de479c33e1555db31ab, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.41
   m_Pitch: 1
@@ -1644,18 +1645,6 @@ PrefabInstance:
       propertyPath: controller
       value: 
       objectReference: {fileID: 132825604}
-    - target: {fileID: 348831302, guid: a2c3222c1602ae24a87f139b1913577e, type: 3}
-      propertyPath: CoolDownMove
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 348831302, guid: a2c3222c1602ae24a87f139b1913577e, type: 3}
-      propertyPath: StartPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 348831302, guid: a2c3222c1602ae24a87f139b1913577e, type: 3}
-      propertyPath: StartPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 348831303, guid: a2c3222c1602ae24a87f139b1913577e, type: 3}
       propertyPath: GM
       value: 
@@ -1673,13 +1662,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 132825604}
     - target: {fileID: 1409548440, guid: a2c3222c1602ae24a87f139b1913577e, type: 3}
-      propertyPath: CanAttack
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1409548440, guid: a2c3222c1602ae24a87f139b1913577e, type: 3}
-      propertyPath: CoolDownAttack
-      value: 0.6
-      objectReference: {fileID: 0}
+      propertyPath: HitSource
+      value: 
+      objectReference: {fileID: 963194229}
     - target: {fileID: 2548184234412957441, guid: a2c3222c1602ae24a87f139b1913577e,
         type: 3}
       propertyPath: m_Name
@@ -1768,6 +1753,10 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 91380396}
+    - target: {fileID: 895032948, guid: 7be1fcaa462d08e42b59125a1d1aca48, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5498160166935612760, guid: 7be1fcaa462d08e42b59125a1d1aca48,
         type: 3}
       propertyPath: m_Name
@@ -1793,6 +1782,11 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1409548438}
+    - target: {fileID: 5498160166935612764, guid: 7be1fcaa462d08e42b59125a1d1aca48,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5498160166935612766, guid: 7be1fcaa462d08e42b59125a1d1aca48,
         type: 3}
       propertyPath: m_RootOrder
@@ -1868,6 +1862,11 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1409548438}
+    - target: {fileID: 5498160166935612767, guid: 7be1fcaa462d08e42b59125a1d1aca48,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5498160166935612767, guid: 7be1fcaa462d08e42b59125a1d1aca48,
         type: 3}
       propertyPath: controller
