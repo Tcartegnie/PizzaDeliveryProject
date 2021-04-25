@@ -6,35 +6,74 @@ public class MovingEntity : MonoBehaviour
 {
     public Grid grid;
    
-    int CurrentXPosition;
-    int CurrentZPosition;
+   public int CurrentXPosition;
+    public int CurrentZPosition;
 
-    public Vector2 Position;
+    public Vector2 StartPosition;
+    protected CaseType type;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-      
-        CurrentXPosition = (int)Position.x;
-        CurrentZPosition = (int)Position.y;
+    public GameManager Gm;
+
+    bool CanMove;
+    public bool Beat;
+    public TimerController controller;
+	private float CurrentCoolDownMove;
+    public float CoolDownMove;
+	// Start is called before the first frame update
+	public virtual void Start()
+	{
+        InitEntity();
+        controller.onBeat += OnBeat;
+	}
+
+	// Update is called once per frame
+
+	public void InitEntity()
+	{
+        CurrentXPosition = (int)StartPosition.x;
+        CurrentZPosition = (int)StartPosition.y;
         ClampPosition();
         transform.position = grid.GetCasePosition(CurrentXPosition, CurrentZPosition);
+        type = grid.GetCaseType(CurrentXPosition, CurrentZPosition);
+        CanMove = true;
     }
-
-    // Update is called once per frame
-    
-
     public void AddPosition(int x, int z)
     {
         CurrentXPosition += x;
         CurrentZPosition += z;
     }
 
-    public void MoveCharacter(int x, int z, float rotate)
+    public virtual void MoveCharacter(int x, int z, float rotate)
 	{
-        Move(x, z);
-        RotatePerso(rotate);
+        if (Gm.CanPlay && CanMove && Beat)
+        {
+            Move(x, z);
+            RotatePerso(rotate);
+        }
     }
+
+    private void FixedUpdate()
+    {
+        if (CurrentCoolDownMove > 0)
+        {
+            CurrentCoolDownMove -= Time.deltaTime;
+        }
+        else
+        {
+            Beat = false;
+        }
+    }
+
+    public void SetCUrrentCaseType(CaseType type)
+    {
+        grid.SetCaseType(CurrentXPosition, CurrentZPosition, type);
+    }
+
+    public void SetCurrentAccesibility(bool value)
+    {
+        grid.SetCaseAccesibility(CurrentXPosition, CurrentZPosition, value);
+    }
+
 
     public void ClampPosition()
     {
@@ -44,18 +83,34 @@ public class MovingEntity : MonoBehaviour
 
     public void Move(int x, int z)
     {
-        if (grid.CaseIsWalkable(CurrentXPosition + x, CurrentZPosition + z))
+        type = grid.GetCaseType(CurrentXPosition + x, CurrentZPosition + z);
+
+        if (grid.GetCaseAccesibility(CurrentXPosition + x, CurrentZPosition + z))
         {
-            grid.SetCaseAsWalkable(CurrentXPosition, CurrentZPosition, true);
+            grid.SetCaseAccesibility(CurrentXPosition, CurrentZPosition, true);
             AddPosition(x, z);
             ClampPosition();
             transform.position = grid.GetCasePosition(CurrentXPosition, CurrentZPosition);
-            grid.SetCaseAsWalkable(CurrentXPosition, CurrentZPosition, false);
+            grid.SetCaseAccesibility(CurrentXPosition, CurrentZPosition, false);
         }
+        Beat = false;
     }
 
     public void RotatePerso(float Degres)
     {
         transform.eulerAngles = new Vector3(0, Degres, 0);
+    }
+
+    public void OnBeat()
+	{
+        Beat = true;
+        CurrentCoolDownMove = CoolDownMove;
+
+    }
+
+    public virtual void OnDeath()
+	{
+        CanMove = false;
+        SetCurrentAccesibility(true);
     }
 }

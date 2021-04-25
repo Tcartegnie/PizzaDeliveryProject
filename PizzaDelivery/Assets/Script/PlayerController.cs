@@ -7,11 +7,9 @@ public class PlayerController : MonoBehaviour
    public int HorizontalValue;
    public int VerticalValue;
 
-    int CurrentXPosition;
-    int CurrentZPosition;
-
     float InputTimer;
     public float DesiredInputTimer;
+    bool CanMove = false;
     public Grid grid;
 
     public AudioSource Sound;
@@ -20,26 +18,26 @@ public class PlayerController : MonoBehaviour
     public AudioClip VictorySound;
     public TimerController timerctrl;
 
-    public MovingEntity entity;
+    public PlayerMove entity;
 
     // Start is called before the first frame update
     void Start()
     {
-        grid.InitGrid();
         transform.position = grid.GetCasePosition(0,0);
         timerctrl.onBeat += SetInputTimer;
+        CanMove = true;
     }
 
     public void SetInputTimer()
 	{
         InputTimer = DesiredInputTimer;
-
     }
  
 
     // Update is called once per frame
     void Update()
     {
+       
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 MoveCharacter(-1, 0, -90);
@@ -60,11 +58,14 @@ public class PlayerController : MonoBehaviour
             {
                 MoveCharacter(0, -1, 180);
             }
-            
-            if(Input.GetKeyDown(KeyCode.Space))
-    		{
-                
-    		}
+
+        
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+		{
+            Application.Quit();
+		}
+
 
         if(InputTimer > 0)
 		{
@@ -72,27 +73,20 @@ public class PlayerController : MonoBehaviour
 		}
     }
 
-    public void Attack()
-	{
+ 
 
-	}
-
-	public void Move(int x, int z)
-	{
-        entity.AddPosition(x, z);
-        entity.ClampPosition();
-        transform.position = grid.GetCasePosition(CurrentXPosition, CurrentZPosition);
-    }
 
 	public void MoveCharacter(int x, int z, float rotate)
 	{
         if (InputTimer > 0)
         {
             Sound.PlayOneShot(VictorySound);
+            entity.MoveCharacter(x, z, rotate);
+         
         }
-        entity.Move(x, z);
-        entity.RotatePerso(rotate);
+     
     }
+
 
 
 }

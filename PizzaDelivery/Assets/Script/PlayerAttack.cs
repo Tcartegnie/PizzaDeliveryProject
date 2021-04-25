@@ -10,7 +10,7 @@ public class PlayerAttack : Attack
     void Start()
     {
 		timer.onBeat += AttackCall;
-        CanAttack = true;
+        OnBeat = true;
     }
 
 	private void Update()
@@ -23,21 +23,19 @@ public class PlayerAttack : Attack
 
 	private void FixedUpdate()
 	{
-
-
 		if(CurrentCoolDownAttack > 0)
 		{
 			CurrentCoolDownAttack -= Time.deltaTime;
 		}
 		else
 		{
-			CanAttack = false;
+			OnBeat = false;
 		}
 	}
 
 	void AttackCall()
 	{
-		CanAttack = true;
+		OnBeat = true;
 		CurrentCoolDownAttack = CoolDownAttack;
 	}
 }
