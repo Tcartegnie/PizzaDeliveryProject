@@ -25,7 +25,13 @@ public class MovingEntity : MonoBehaviour
 	}
 
 	// Update is called once per frame
-
+    public void Init(Vector3 Position,Grid grid,GameManager gM)
+	{
+        this.grid = grid;
+        Gm = gM;
+        StartPosition = new Vector2(Position.x,Position.z);
+        InitEntity();
+	}
 	public void InitEntity()
 	{
         CurrentXPosition = (int)StartPosition.x;

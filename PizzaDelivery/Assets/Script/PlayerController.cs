@@ -19,58 +19,58 @@ public class PlayerController : MonoBehaviour
     public TimerController timerctrl;
 
     public PlayerMove entity;
-
+    public GameManager GM;
     // Start is called before the first frame update
     void Start()
     {
         transform.position = grid.GetCasePosition(0,0);
-        timerctrl.onBeat += SetInputTimer;
         CanMove = true;
     }
 
-    public void SetInputTimer()
-	{
-        InputTimer = DesiredInputTimer;
-    }
+
  
+    public void CallInput()
+	{
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            MoveCharacter(-1, 0, -90);
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            MoveCharacter(1, 0, 90);
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            MoveCharacter(0, 1, 0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            MoveCharacter(0, -1, 180);
+        }
+
+
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
 
     // Update is called once per frame
     void Update()
     {
-       
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                MoveCharacter(-1, 0, -90);
-            }
-
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                MoveCharacter(1, 0, 90);
-            }
-
-
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                MoveCharacter(0, 1, 0);
-            }
-
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                MoveCharacter(0, -1, 180);
-            }
+      
+        if(GM.CanPlay)
+		{
+            CallInput();
+		}
 
         
-
-        if(Input.GetKeyDown(KeyCode.Escape))
-		{
-            Application.Quit();
-		}
-
-
-        if(InputTimer > 0)
-		{
-            InputTimer -= Time.deltaTime;
-		}
     }
 
  
@@ -80,10 +80,16 @@ public class PlayerController : MonoBehaviour
 	{
         if (timerctrl.IsNearBeat())
         {
+            GM.AddMultiplicator();
+            GM.AddScore();
             Sound.PlayOneShot(VictorySound);
             entity.MoveCharacter(x, z, rotate);
          
         }
+        else
+		{
+            GM.RestMultiplicator();
+		}
      
     }
 

@@ -13,6 +13,11 @@ public class Attack : MonoBehaviour
     public bool OnBeat = true;
     public bool CanAttack = true;
 
+    public void Init(TimerController timer, Grid grid)
+	{
+        this.timer = timer;
+        this.grid = grid;
+	}
 
 	public void CallAttack()
 	{

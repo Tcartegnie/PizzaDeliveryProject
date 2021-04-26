@@ -15,6 +15,11 @@ public class EntityState : MonoBehaviour
         ActualPV = PVmax;
     }
 
+    public void Init(Grid grid)
+	{
+        this.grid = grid;
+    }
+
    public void TakeHit()
 	{
         ActualPV -= 1;

@@ -145,6 +145,14 @@ public class Grid : MonoBehaviour
             SetCaseAccesibility((int)Room.Objects[i].position.x,(int)Room.Objects[i].position.y,false);
             Cases.Add(GO);
         }
+
+        for (int i = 0; i < Room.Enemies.Count; i++)
+        {
+            GameObject GO = factory.InstanciateEnnemy(new Vector3(Room.Objects[i].position.x, -1, Room.Objects[i].position.y),currentTransform);
+            
+            SetCaseAccesibility((int)Room.Objects[i].position.x, (int)Room.Objects[i].position.y, false);
+            Cases.Add(GO);
+        }
         currentTransform.position = currentTransform.position + transform.forward * BeginOffset;
     }
 

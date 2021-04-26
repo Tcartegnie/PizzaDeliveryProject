@@ -22,6 +22,7 @@ public class SOBJroom : ScriptableObject
 	public List<GameObject> LeftWall = new List<GameObject>();
 	public List<GameObject> FrontWall = new List<GameObject>();
 	public List<GridOBJ> Objects = new List<GridOBJ>();
+	public List<Vector2> Enemies = new List<Vector2>();
 }
 
 
