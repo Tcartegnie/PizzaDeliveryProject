@@ -17,12 +17,12 @@ public struct Case
 public class Grid : MonoBehaviour
 {
 
-   public int XgridLenght;
-   public int ZgridLenght;
    public int transformOffset;
 
    public GameObject Cube;
 
+    public List<SOBJroom> Rooms = new List<SOBJroom>();
+    SOBJroom CurrentRoom;
     List<GameObject> Cases = new List<GameObject>();
 
     Case[,] grid;
@@ -30,35 +30,28 @@ public class Grid : MonoBehaviour
 
     public Vector2 GetGridLenght()
 	{
-        return new Vector2(XgridLenght, ZgridLenght);
+        return new Vector2((int)CurrentRoom.GridLenght.x,(int)CurrentRoom.GridLenght.y);
 	}
 
-	public void Start()
+	public void Awake()
 	{
         InitGrid();
 	}
 
 	public void DestroyGrid()
     { 	
-
         for(int i = 0; i < Cases.Count;i++)
 		{
-            GameObject GO = Cases[i];
-            Cases.Remove(GO);
-            Destroy(GO);
+            Destroy(Cases[i]);
         }
-  
-
         Cases.Clear();
 	}
 
 	public void InitGrid()
 	{
         DestroyGrid();
-
-        grid = new Case[XgridLenght, ZgridLenght];
-
-        CreatGrid();
+        CurrentRoom = Rooms[Random.Range(0, Rooms.Count)];
+        CreatGrid(CurrentRoom);
     }
 
     public Vector3 GetCasePosition(int x,int y)
@@ -68,22 +61,22 @@ public class Grid : MonoBehaviour
 
     public CaseType GetCaseType(int x, int y)
 	{
-        x = Mathf.Clamp(x, 0, XgridLenght - 1);
-        y = Mathf.Clamp(y, 0, ZgridLenght - 1);
+        x = Mathf.Clamp(x, 0, (int)CurrentRoom.GridLenght.x - 1);
+        y = Mathf.Clamp(y, 0, (int)CurrentRoom.GridLenght.y - 1);
         return grid[x, y].type;
 	}
 
     public bool GetCaseAccesibility(int x, int y)
     {
-        x = Mathf.Clamp(x, 0, XgridLenght - 1);
-        y = Mathf.Clamp(y, 0, ZgridLenght - 1);
+        x = Mathf.Clamp(x, 0, (int)CurrentRoom.GridLenght.x - 1);
+        y = Mathf.Clamp(y, 0, (int)CurrentRoom.GridLenght.y - 1);
         return grid[x, y].IsReachable;
     }
 
     public void SetCaseAccesibility(int x, int y, bool value)
     {
-        x = Mathf.Clamp(x, 0, XgridLenght - 1);
-        y = Mathf.Clamp(y, 0, ZgridLenght - 1);
+        x = Mathf.Clamp(x, 0, (int)CurrentRoom.GridLenght.x - 1);
+        y = Mathf.Clamp(y, 0, (int)CurrentRoom.GridLenght.y - 1);
         grid[x, y].IsReachable = value;
     }
 
@@ -93,11 +86,14 @@ public class Grid : MonoBehaviour
     }
 
 
-    public void CreatGrid()
+    public void CreatGrid(SOBJroom Room)
 	{
-        for (int i = 0; i < XgridLenght; i++)
+        Vector2 GridLenght = Room.GridLenght;
+        List<Vector2> victoryCase = Room.VictoryCase;
+        grid = new Case[(int)GridLenght.x,(int)GridLenght.y];
+        for (int i = 0; i < GridLenght.x; i++)
         {
-            for (int j = 0; j < ZgridLenght; j++)
+            for (int j = 0; j < GridLenght.y; j++)
             {
                 grid[i, j].position += (transform.position + ((transform.right * transformOffset) * i));
                 grid[i, j].position += (transform.position + ((transform.forward * transformOffset) * j));
@@ -108,20 +104,26 @@ public class Grid : MonoBehaviour
             }
         }
 
-        grid[(int)VictoryGrid.x,(int)VictoryGrid.y].type = CaseType.Exit;
+
+        for (int i = 0; i < victoryCase.Count; i++)
+		{
+            grid[(int)victoryCase[i].x-1, (int)victoryCase[i].y-1].type = CaseType.Exit;
+        }
+
+           
     }
 
     // Update is called once per frame
     void Update()
     {
-        DrawDebug();
+      //  DrawDebug();
     }
 
     public void DrawDebug()
 	{
-        for (int i = 0; i < XgridLenght; i++)
+        for (int i = 0; i < (int)CurrentRoom.GridLenght.x; i++)
         {
-            for (int j = 0; j < ZgridLenght; j++)
+            for (int j = 0; j < (int)CurrentRoom.GridLenght.y; j++)
             {
                 Debug.DrawRay(grid[i,j].position,Vector3.up * 10);
             }

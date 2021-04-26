@@ -43,7 +43,7 @@ public class MovingEntity : MonoBehaviour
 
     public virtual void MoveCharacter(int x, int z, float rotate)
 	{
-        if (Gm.CanPlay && CanMove)
+        if (Gm.CanPlay && CanMove && Beat)
         {
             Move(x, z);
             RotatePerso(rotate);
@@ -63,8 +63,8 @@ public class MovingEntity : MonoBehaviour
 
     public void ClampPosition()
     {
-        CurrentXPosition = Mathf.Clamp(CurrentXPosition, 0, grid.XgridLenght - 1);
-        CurrentZPosition = Mathf.Clamp(CurrentZPosition, 0, grid.ZgridLenght - 1);
+        CurrentXPosition = Mathf.Clamp(CurrentXPosition, 0, (int)grid.GetGridLenght().x - 1);
+        CurrentZPosition = Mathf.Clamp(CurrentZPosition, 0, (int)grid.GetGridLenght().y - 1);
     }
 
     public void Move(int x, int z)
@@ -79,6 +79,7 @@ public class MovingEntity : MonoBehaviour
             transform.position = grid.GetCasePosition(CurrentXPosition, CurrentZPosition);
             grid.SetCaseAccesibility(CurrentXPosition, CurrentZPosition, false);
         }
+        Beat = false;
     }
 
     public void RotatePerso(float Degres)
