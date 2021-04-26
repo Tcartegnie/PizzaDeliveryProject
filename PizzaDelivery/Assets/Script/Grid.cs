@@ -23,7 +23,7 @@ public class Grid : MonoBehaviour
 
     public List<SOBJroom> Rooms = new List<SOBJroom>();
     SOBJroom CurrentRoom;
-    List<GameObject> Cases = new List<GameObject>();
+    List<GameObject> ObjectOnFloor = new List<GameObject>();
     public SOBJroom VisoRoom;
     Case[,] grid;
     public Vector2 VictoryGrid;
@@ -66,11 +66,11 @@ public class Grid : MonoBehaviour
 
 	public void DestroyGrid()
     { 	
-        for(int i = 0; i < Cases.Count;i++)
+        for(int i = 0; i < ObjectOnFloor.Count;i++)
 		{
-            Destroy(Cases[i]);
+            Destroy(ObjectOnFloor[i]);
         }
-        Cases.Clear();
+        ObjectOnFloor.Clear();
 	}
 
 	public void InitGrid(int BeginOffset)
@@ -129,7 +129,7 @@ public class Grid : MonoBehaviour
                 grid[i, j].type = CaseType.Empty;
                 grid[i, j].IsReachable = true;
                 GameObject go = Instantiate(Cube,transform.position + ((transform.right * i) + transform.forward * j) -transform.up, new Quaternion(),currentTransform);
-                Cases.Add(go);
+                ObjectOnFloor.Add(go);
             }
         }
 
@@ -143,7 +143,7 @@ public class Grid : MonoBehaviour
         {
             GameObject GO = factory.InstanceObject(Room.Objects[i].type, new Vector3(Room.Objects[i].position.x, -1, Room.Objects[i].position.y),currentTransform);
             SetCaseAccesibility((int)Room.Objects[i].position.x,(int)Room.Objects[i].position.y,false);
-            Cases.Add(GO);
+            ObjectOnFloor.Add(GO);
         }
 
         for (int i = 0; i < Room.Enemies.Count; i++)
@@ -151,7 +151,7 @@ public class Grid : MonoBehaviour
             GameObject GO = factory.InstanciateEnnemy(new Vector3(Room.Objects[i].position.x, -1, Room.Objects[i].position.y),currentTransform);
             
             SetCaseAccesibility((int)Room.Objects[i].position.x, (int)Room.Objects[i].position.y, false);
-            Cases.Add(GO);
+            ObjectOnFloor.Add(GO);
         }
         currentTransform.position = currentTransform.position + transform.forward * BeginOffset;
     }
@@ -180,6 +180,7 @@ public class Grid : MonoBehaviour
             yield return null;
 		}
         InitGrid(100);
+       
         for (float i = 0; i < 1; i += Time.deltaTime / (TransitionDuration/2))
         {
             Vector3 Depart = currentTransform.position;
@@ -189,6 +190,12 @@ public class Grid : MonoBehaviour
         }
         player.SetCharacterPosition((int)GetGridLenght().x / 2, 0);
         gm.StartGame();
+    }
+
+    public void removeEntity(GameObject GO)
+	{
+        ObjectOnFloor.Remove(GO);
+
     }
 
 }

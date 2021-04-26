@@ -18,18 +18,22 @@ public class MovingEntity : MonoBehaviour
     public bool Beat;
     public TimerController controller;
 	// Start is called before the first frame update
-	public virtual void Start()
+    public virtual void Start()
 	{
-        InitEntity();
-        controller.onBeat += OnBeat;
+        if (gameObject.tag == "Player")
+		{
+            controller.onBeat += OnBeat;
+            InitEntity();
+        }
 	}
 
 	// Update is called once per frame
-    public void Init(Vector3 Position,Grid grid,GameManager gM)
+    public virtual void Init(Vector3 Position,Grid grid,GameManager gM, TimerController controller, Transform Target)
 	{
         this.grid = grid;
         Gm = gM;
         StartPosition = new Vector2(Position.x,Position.z);
+        controller.onBeat += OnBeat;
         InitEntity();
 	}
 	public void InitEntity()
@@ -110,5 +114,6 @@ public class MovingEntity : MonoBehaviour
 	{
         CanMove = false;
         SetCurrentAccesibility(true);
+        controller.onBeat -= OnBeat;
     }
 }

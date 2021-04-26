@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 348831303}
   m_Layer: 9
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -244,6 +244,7 @@ MonoBehaviour:
   VictorySound: {fileID: 8300000, guid: eb1e1ac879f1bed4388983b78bc14c42, type: 3}
   timerctrl: {fileID: 0}
   entity: {fileID: 348831302}
+  GM: {fileID: 0}
 --- !u!114 &1409548440
 MonoBehaviour:
   m_ObjectHideFlags: 0

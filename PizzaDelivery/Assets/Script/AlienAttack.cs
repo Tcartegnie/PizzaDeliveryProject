@@ -7,13 +7,16 @@ public class AlienAttack : Attack
     public Transform target;
     public int BeatCount;
     public int BeatCountMax;
-    void Start()
-    {
-        timer.onBeat += CallAttack;
+
+
+	public override void Init(TimerController timer, Grid grid,Transform target)
+	{
+		base.Init(timer, grid, target);
         timer.onBeat += AddBeat;
+       this.target = target;
         OnBeat = false;
     }
-    public void AddBeat()
+	public void AddBeat()
 	{
         if (Vector3.Distance(target.position, transform.position) <= 1)
         {
@@ -34,8 +37,8 @@ public class AlienAttack : Attack
     public override void OnDeath()
 	{
         base.OnDeath();
-       // timer.onBeat -= CallAttack;
-       // timer.onBeat -= AddBeat;
+        timer.onBeat -= CallAttack;
+        timer.onBeat -= AddBeat;
 	}
 
 }

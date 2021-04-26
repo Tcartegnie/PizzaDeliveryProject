@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
 	public TimerController ctrl;
 
 	public MovingEntity Player;
-	public MovingEntity Alien;
 	public ScoreDisplayer scoreDisplayer;
 	public RectTransform StartRect;
 	public int VictoryRoom = 0;
@@ -85,7 +84,6 @@ public class GameManager : MonoBehaviour
 	public bool CanPlay = true;
 	public void Victory()
 	{
-		VictoryRoom++;
 		if (VictoryRoom == RoomPerFloor)
 		{
 			screen.SetText(VictroryText);
@@ -96,6 +94,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
+			VictoryRoom++;
 			onVictory();
 		}
 
@@ -105,9 +104,6 @@ public class GameManager : MonoBehaviour
 			CanPlay = false;
 			EndGame();
 			scoreDisplayer.DisplayFinalScore();
-		}
-		else
-		{
 			TrueEnd();
 		}
 		scoreDisplayer.SetFloorCount(FloorCount);
@@ -143,9 +139,6 @@ public class GameManager : MonoBehaviour
 
 	public void InitGame()
 	{
-		Alien.gameObject.SetActive(true);
-		Alien.InitEntity();
-		Player.gameObject.SetActive(true);
 		Player.InitEntity();
 		StartRect.gameObject.SetActive(true);
 	}

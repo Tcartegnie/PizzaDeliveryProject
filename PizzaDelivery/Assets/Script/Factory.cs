@@ -9,6 +9,7 @@ public class Factory : MonoBehaviour
 	public TimerController time;
 	public GameManager GM;
 	public GameObject Ennemy;
+	public Transform Target;
 	List<GameObject> obj;
 	
    public GameObject InstanceObject(TypeCrate type, Vector3 position)
@@ -53,8 +54,8 @@ public class Factory : MonoBehaviour
 	{
 		GameObject GO = InstanceObject(Ennemy, position, parent);
 		GO.GetComponent<EntityState>().Init(grid);
-		GO.GetComponent<AlienMove>().Init(position,grid,GM);
-		GO.GetComponent<AlienAttack>().Init(time,grid);
+		GO.GetComponent<AlienMove>().Init(position, grid, GM, time, Target);
+		GO.GetComponent<AlienAttack>().Init(time,grid,Target);
 		return GO;
 	}
 

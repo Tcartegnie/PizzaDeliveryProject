@@ -40,7 +40,10 @@ public class TimerController : MonoBehaviour
 
     public void IsBeating()
 	{
-        onBeat();
+        if (onBeat != null)
+        {
+            onBeat();
+        }
     }
 
     // Start is called before the first frame update

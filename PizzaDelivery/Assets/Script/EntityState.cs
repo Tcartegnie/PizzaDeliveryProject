@@ -39,5 +39,7 @@ public class EntityState : MonoBehaviour
 	{
         attack.OnDeath();
         move.OnDeath();
+        grid.removeEntity(gameObject);
+        Destroy(gameObject);
 	}
 }

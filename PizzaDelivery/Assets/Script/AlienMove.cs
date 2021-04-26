@@ -5,12 +5,12 @@ using UnityEngine;
 public class AlienMove : MovingEntity
 {
     public Transform target;
-    public TimerController timer;
 
-	public override void Start()
+
+	public override void Init(Vector3 Position, Grid grid, GameManager gM, TimerController controller, Transform Target)
 	{
-        base.Start();
-        timer.onBeat += MoveToPlayer;
+		base.Init(Position, grid, gM, controller,target);
+       this.target = Target;
 	}
 
 	void MoveToPlayer()
@@ -42,6 +42,6 @@ public class AlienMove : MovingEntity
     public override void OnDeath()
 	{
         base.OnDeath();
-       // timer.onBeat -= MoveToPlayer;
+        controller.onBeat -= MoveToPlayer;
 	}
 }

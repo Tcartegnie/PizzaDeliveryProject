@@ -864,6 +864,7 @@ MonoBehaviour:
   time: {fileID: 132825604}
   GM: {fileID: 1115003620}
   Ennemy: {fileID: 5498160166935612760, guid: 7be1fcaa462d08e42b59125a1d1aca48, type: 3}
+  Target: {fileID: 1409548438}
 --- !u!1 &400123952
 GameObject:
   m_ObjectHideFlags: 0
@@ -1823,11 +1824,10 @@ MonoBehaviour:
   TrueVictroryText: Pizza delivered !
   DefeatText: No pizza anymore !
   RoomPerFloor: 4
-  FloorMax: 15
+  FloorMax: 2
   grid: {fileID: 91380396}
   ctrl: {fileID: 132825604}
   Player: {fileID: 1656107701}
-  Alien: {fileID: 0}
   scoreDisplayer: {fileID: 264167091}
   StartRect: {fileID: 492514621}
   VictoryRoom: 0
@@ -2176,6 +2176,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1252659507}
   m_CullTransparentMesh: 0
+--- !u!4 &1409548438 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2548184234412957442, guid: a2c3222c1602ae24a87f139b1913577e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2548184233137627028}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1465855652
 GameObject:
   m_ObjectHideFlags: 0
