@@ -6,10 +6,18 @@ public class Factory : MonoBehaviour
 {
     public SOBJObjectList list;
 	List<GameObject> obj;
-   public void InstanceObject(TypeCrate type, Vector3 position)
+   public GameObject InstanceObject(TypeCrate type, Vector3 position)
 	{
 		GameObject GO = list.GetObjByType(type);
-		Instantiate(GO, position, new Quaternion());
+		GO = Instantiate(GO, position, new Quaternion());
+		return GO; 
+	}
+
+	public GameObject InstanceObject(TypeCrate type, Vector3 position, Transform parent)
+	{
+		GameObject GO = InstanceObject(type, position);
+		GO.transform.SetParent(parent, false);
+		return GO;
 	}
 
 	public void ClearOBJ()

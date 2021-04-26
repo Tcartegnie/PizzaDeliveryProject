@@ -82,6 +82,14 @@ public class MovingEntity : MonoBehaviour
         Beat = false;
     }
 
+    public void SetCharacterPosition(int x, int y)
+	{
+       transform.position = grid.GetCasePosition(x, y);
+        CurrentXPosition = x;
+        CurrentZPosition = y;
+
+    }
+
     public void RotatePerso(float Degres)
     {
         transform.eulerAngles = new Vector3(0, Degres, 0);

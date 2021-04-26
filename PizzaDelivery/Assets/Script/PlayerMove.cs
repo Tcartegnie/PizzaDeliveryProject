@@ -7,6 +7,7 @@ public class PlayerMove : MovingEntity
 	public override void Start()
 	{
 		base.Start();
+
 	}
 	public override void MoveCharacter(int x, int z, float rotate)
 	{
@@ -16,7 +17,9 @@ public class PlayerMove : MovingEntity
 			if (type == CaseType.Exit)
 			{
 				Gm.Victory();
+				type = CaseType.Empty;
 			}
 		}
 	}
+
 }
