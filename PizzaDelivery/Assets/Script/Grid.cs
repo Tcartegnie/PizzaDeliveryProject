@@ -24,10 +24,16 @@ public class Grid : MonoBehaviour
     public List<SOBJroom> Rooms = new List<SOBJroom>();
     SOBJroom CurrentRoom;
     List<GameObject> Cases = new List<GameObject>();
-
+    public SOBJroom VisoRoom;
     Case[,] grid;
     public Vector2 VictoryGrid;
+    public bool Visibility;
+    public float TransitionDuration;
+    public Factory factory;
 
+    Transform currentTransform;
+    public PlayerMove player;
+    public GameManager gm;
     public Vector2 GetGridLenght()
 	{
         return new Vector2((int)CurrentRoom.GridLenght.x,(int)CurrentRoom.GridLenght.y);
@@ -35,7 +41,27 @@ public class Grid : MonoBehaviour
 
 	public void Awake()
 	{
-        InitGrid();
+        if (!Visibility)
+        {
+            InitGrid(0);
+        }
+        else
+		{
+            CurrentRoom = VisoRoom;
+            DestroyGrid();
+            CreatGrid(CurrentRoom,0);
+		}
+	}
+
+	public void Start()
+	{
+        gm.onVictory += OnVictory;
+
+    }
+
+    public void OnVictory()
+	{
+        StartCoroutine(RoomTransition());
 	}
 
 	public void DestroyGrid()
@@ -47,11 +73,12 @@ public class Grid : MonoBehaviour
         Cases.Clear();
 	}
 
-	public void InitGrid()
+	public void InitGrid(int BeginOffset)
 	{
         DestroyGrid();
         CurrentRoom = Rooms[Random.Range(0, Rooms.Count)];
-        CreatGrid(CurrentRoom);
+        CreatGrid(CurrentRoom, BeginOffset);
+    
     }
 
     public Vector3 GetCasePosition(int x,int y)
@@ -86,8 +113,10 @@ public class Grid : MonoBehaviour
     }
 
 
-    public void CreatGrid(SOBJroom Room)
+    public void CreatGrid(SOBJroom Room, int BeginOffset)
 	{
+        currentTransform = Instantiate( new GameObject(),transform,true).transform;
+       
         Vector2 GridLenght = Room.GridLenght;
         List<Vector2> victoryCase = Room.VictoryCase;
         grid = new Case[(int)GridLenght.x,(int)GridLenght.y];
@@ -99,7 +128,7 @@ public class Grid : MonoBehaviour
                 grid[i, j].position += (transform.position + ((transform.forward * transformOffset) * j));
                 grid[i, j].type = CaseType.Empty;
                 grid[i, j].IsReachable = true;
-                GameObject go = Instantiate(Cube,transform.position + ((transform.right * i) + transform.forward * j) -transform.up, new Quaternion());
+                GameObject go = Instantiate(Cube,transform.position + ((transform.right * i) + transform.forward * j) -transform.up, new Quaternion(),currentTransform);
                 Cases.Add(go);
             }
         }
@@ -110,17 +139,19 @@ public class Grid : MonoBehaviour
             grid[(int)victoryCase[i].x-1, (int)victoryCase[i].y-1].type = CaseType.Exit;
         }
 
-           
+        for (int i = 0; i < Room.Objects.Count; i++)
+        {
+            GameObject GO = factory.InstanceObject(Room.Objects[i].type, new Vector3(Room.Objects[i].position.x, -1, Room.Objects[i].position.y),currentTransform);
+            SetCaseAccesibility((int)Room.Objects[i].position.x,(int)Room.Objects[i].position.y,false);
+            Cases.Add(GO);
+        }
+        currentTransform.position = currentTransform.position + transform.forward * BeginOffset;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-      //  DrawDebug();
-    }
 
     public void DrawDebug()
 	{
+     
         for (int i = 0; i < (int)CurrentRoom.GridLenght.x; i++)
         {
             for (int j = 0; j < (int)CurrentRoom.GridLenght.y; j++)
@@ -129,5 +160,27 @@ public class Grid : MonoBehaviour
             }
         }
      }
+
+    public IEnumerator RoomTransition()
+	{
+        Transform removingtranform = currentTransform;
+        for (float i = 0; i < 1; i += Time.deltaTime /(TransitionDuration/2))
+		{
+            Vector3 Depart = removingtranform.position;
+            Vector3 Arrival = removingtranform.position - transform.forward * 100;
+            removingtranform.position = Vector3.Lerp(Depart, Arrival, i);
+            yield return null;
+		}
+        InitGrid(100);
+        for (float i = 0; i < 1; i += Time.deltaTime / (TransitionDuration/2))
+        {
+            Vector3 Depart = currentTransform.position;
+            Vector3 Arrival = Vector3.zero;
+            currentTransform.position = Vector3.Lerp(Depart, Arrival, i);
+            yield return null;
+        }
+        player.SetCharacterPosition((int)GetGridLenght().x / 2, 0);
+        gm.StartGame();
+    }
 
 }
