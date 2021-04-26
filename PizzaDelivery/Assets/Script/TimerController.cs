@@ -82,7 +82,8 @@ public class TimerController : MonoBehaviour
         if (GM.CanPlay && GameStart)
         {
             ComputeMusicPosition();
-            if (songposition > OffBeatOffset)
+            //J'ai pas compris ça alors j'ai commenté, fin j'ai l'impression que songposition est faux et de toute façon OffBeatOffset était à zéro
+            //if (songposition > OffBeatOffset)
             {
                 Metronome();
             }
@@ -105,13 +106,15 @@ public class TimerController : MonoBehaviour
             if (CurrentBeatTimer <= 0f)
             {
                 IsBeating();
-                CurrentBeatTimer = SecPerBeat;
+                //Vu que CurrentBeatTimer n'est jamais pile à zéro on perd des millisecondes si on remet à GetSecPerBeat, du coup, je rajoute SecPerBeat pour équilibrer. C'est pas un souci
+                CurrentBeatTimer += SecPerBeat;
             }
     }
 
     public bool IsNearBeat()
     {
-        return CurrentBeatTimer <= BeatMargin && CurrentBeatTimer >= GetSecPerBeat() - BeatMargin;
+        //Bon j'ai fait des tests et en vrai on a envie de se dire "ouais l'user blabla il appuie toujours après" mais en vrai j'ai l'impression qu'on anticipe plus qu'autre chose, du coup j'ai mis ça et ça marche beaucoup mieux je trouve, ça 
+        return CurrentBeatTimer > GetSecPerBeat() - BeatMargin;
     }
 
     void ComputeMusicPosition()
