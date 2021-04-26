@@ -24,10 +24,12 @@ public class Grid : MonoBehaviour
     public List<SOBJroom> Rooms = new List<SOBJroom>();
     SOBJroom CurrentRoom;
     List<GameObject> Cases = new List<GameObject>();
-
+    public SOBJroom VisoRoom;
     Case[,] grid;
     public Vector2 VictoryGrid;
+    public bool Visibility;
 
+    public Factory factory;
     public Vector2 GetGridLenght()
 	{
         return new Vector2((int)CurrentRoom.GridLenght.x,(int)CurrentRoom.GridLenght.y);
@@ -35,7 +37,16 @@ public class Grid : MonoBehaviour
 
 	public void Awake()
 	{
-        InitGrid();
+        if (!Visibility)
+        {
+            InitGrid();
+        }
+        else
+		{
+            CurrentRoom = VisoRoom;
+            DestroyGrid();
+            CreatGrid(CurrentRoom);
+		}
 	}
 
 	public void DestroyGrid()
@@ -110,7 +121,12 @@ public class Grid : MonoBehaviour
             grid[(int)victoryCase[i].x-1, (int)victoryCase[i].y-1].type = CaseType.Exit;
         }
 
-           
+        for (int i = 0; i < Room.Objects.Count; i++)
+        {
+            factory.InstanceObject(Room.Objects[i].type, new Vector3(Room.Objects[i].position.x, -1, Room.Objects[i].position.y));
+            SetCaseAccesibility((int)Room.Objects[i].position.x,(int)Room.Objects[i].position.y,false);
+        }
+
     }
 
     // Update is called once per frame
