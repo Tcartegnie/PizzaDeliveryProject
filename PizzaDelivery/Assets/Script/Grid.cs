@@ -150,7 +150,7 @@ public class Grid : MonoBehaviour
         {
             GameObject GO = factory.InstanciateEnnemy(new Vector3(Room.Enemies[i].x, -1, Room.Enemies[i].y),currentTransform);
             
-            SetCaseAccesibility((int)Room.Objects[i].position.x, (int)Room.Objects[i].position.y, false);
+            SetCaseAccesibility((int)Room.Enemies[i].x, (int)Room.Enemies[i].y, false);
             ObjectOnFloor.Add(GO);
         }
         currentTransform.position = currentTransform.position + transform.forward * BeginOffset;
