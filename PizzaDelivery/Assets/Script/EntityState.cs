@@ -6,6 +6,9 @@ public class EntityState : MonoBehaviour
 {
     public int PVmax;
     public int ActualPV;
+    public Attack attack;
+    public MovingEntity move;
+    public Grid grid;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +25,14 @@ public class EntityState : MonoBehaviour
 	{
         if(ActualPV <= 0)
 		{
-            Destroy(gameObject);
+            OnDeath();
+            gameObject.SetActive(false);
 		}
+	}
+
+    public virtual void OnDeath()
+	{
+        attack.OnDeath();
+        move.OnDeath();
 	}
 }

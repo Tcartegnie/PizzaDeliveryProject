@@ -10,12 +10,13 @@ public class Attack : MonoBehaviour
     public TimerController timer;
     public Grid grid;
     public LayerMask RayCastMask;
+    public bool OnBeat = true;
     public bool CanAttack = true;
 
 
 	public void CallAttack()
 	{
-        if (CanAttack)
+        if (CanAttack && timer.IsNearBeat())
         {
             CheckCase();
         }
@@ -31,11 +32,13 @@ public class Attack : MonoBehaviour
             if (HitInfo.transform.GetComponentInParent<EntityState>() != null)
             {
                 HitInfo.transform.GetComponentInParent<EntityState>().TakeHit();
-                CanAttack = false;
             }
 		}
 	}
 
-
+    public virtual void OnDeath()
+    {
+        CanAttack = false;
+    }
 
 }

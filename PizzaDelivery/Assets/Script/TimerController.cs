@@ -7,25 +7,31 @@ public class TimerController : MonoBehaviour
 
     public float songposition;
     public float songpositioninBeats;
-    public int LastsongpositioninBeats;
     public float OffBeatOffset;
-    public float CurrentBeat;
+    public float CurrentBeatTimer;
 
     public float dspsongTime;
     public float InputCoolDown;
 
     public float SecPerBeat;
     public float SongBPM;
+    public float BeatMargin;
     public AudioSource Music;
 
     public delegate void Beat();
 
     public Beat onBeat;
-  
+    public GameManager GM;
+    public RectTransform Startrect;
 
+    public BeatDisplay beatDisplay;
+
+    public RectTransform BluePicture;
+
+    public bool GameStart = false;
     public float GetPositonInSong()
     {
-        return (float)(AudioSettings.dspTime - dspsongTime - OffBeatOffset);
+        return (float)(AudioSettings.dspTime - dspsongTime - (OffBeatOffset));
     }
     public float GetPositionInBeat()
     {
@@ -40,26 +46,84 @@ public class TimerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SecPerBeat = 60f / SongBPM;
-        dspsongTime = (float)AudioSettings.dspTime;
-        Music.Play();
+        GM.onVictory += OnEndGame;
+        GM.onDefeat += OnEndGame;
+      //  onBeat += beatDisplay.OnBeat;
     }
 
-    private void FixedUpdate()
-    {
+    public void StartMusic()
+	{
+        SecPerBeat = GetSecPerBeat();
+        dspsongTime = (float)AudioSettings.dspTime;
+        songposition = 0;
+        songpositioninBeats = 0;
+        InputCoolDown = 0;
+        GameStart = true;
+        Music.Play();
+       // beatDisplay.InstantiateBeat();
+    }
 
-        songposition = GetPositonInSong();
-        songpositioninBeats = GetPositionInBeat();
+    public float GetSecPerBeat()
+	{
+      return 60f / SongBPM;
+    }
 
-        CurrentBeat += Time.deltaTime;
-        if(CurrentBeat >= SecPerBeat)
+	private void Update()
+	{
+		if(!GameStart)
 		{
-            IsBeating();
-            CurrentBeat = 0;
+            if(Input.anyKeyDown)
+			{
+                Startrect.gameObject.SetActive(false);
+                StartMusic();
+            }
 		}
 
+        if (GM.CanPlay && GameStart)
+        {
+            ComputeMusicPosition();
+            if (songposition > OffBeatOffset)
+            {
+                Metronome();
+            }
+        }
 
-        LastsongpositioninBeats = (int)songpositioninBeats;
+        if(IsNearBeat())
+		{
+            BluePicture.gameObject.SetActive(true);
+        }
+        else
+		{
+            BluePicture.gameObject.SetActive(false);
+        }
+    }
+
+
+    public void Metronome()
+	{       
+            (CurrentBeatTimer) -= Time.deltaTime;
+            if (CurrentBeatTimer <= 0f)
+            {
+                IsBeating();
+                CurrentBeatTimer = SecPerBeat;
+            }
+    }
+
+    public bool IsNearBeat()
+    {
+        return CurrentBeatTimer <= BeatMargin && CurrentBeatTimer >= GetSecPerBeat() - BeatMargin;
+    }
+
+    void ComputeMusicPosition()
+	{
+        songposition = GetPositonInSong();
+        songpositioninBeats = GetPositionInBeat();
+    }
+
+    void OnEndGame()
+	{
+        GameStart = false;
+        Music.Stop();
     }
 
 }
