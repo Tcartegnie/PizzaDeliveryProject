@@ -148,7 +148,7 @@ public class Grid : MonoBehaviour
 
         for (int i = 0; i < Room.Enemies.Count; i++)
         {
-            GameObject GO = factory.InstanciateEnnemy(new Vector3(Room.Objects[i].position.x, -1, Room.Objects[i].position.y),currentTransform);
+            GameObject GO = factory.InstanciateEnnemy(new Vector3(Room.Enemies[i].x, -1, Room.Enemies[i].y),currentTransform);
             
             SetCaseAccesibility((int)Room.Objects[i].position.x, (int)Room.Objects[i].position.y, false);
             ObjectOnFloor.Add(GO);

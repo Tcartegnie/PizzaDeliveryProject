@@ -33,6 +33,6 @@ MonoBehaviour:
   - type: 0
     position: {x: 5, y: 17}
   Enemies:
-  - {x: 1, y: 10}
-  - {x: 6, y: 10}
+  - {x: 0, y: 10}
+  - {x: 5, y: 10}
   - {x: 4, y: 19}

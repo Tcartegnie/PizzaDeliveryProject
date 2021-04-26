@@ -8,6 +8,7 @@ public class PlayerAttack : Attack
     float CurrentCoolDownAttack;
 	public AudioSource HitSource;
 	public AudioClip HitClip;
+	public GameManager GM;
 
     void Start()
     {
@@ -22,6 +23,10 @@ public class PlayerAttack : Attack
 			{
 				CallAttack();
 				HitSource.PlayOneShot(HitClip);
+			}
+			else
+			{
+				GM.RestMultiplicator();
 			}
 		}
 	}

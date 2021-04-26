@@ -33,7 +33,8 @@ public class MovingEntity : MonoBehaviour
         this.grid = grid;
         Gm = gM;
         StartPosition = new Vector2(Position.x,Position.z);
-        controller.onBeat += OnBeat;
+        this.controller = controller;
+        this.controller.onBeat += OnBeat;
         InitEntity();
 	}
 	public void InitEntity()
@@ -105,7 +106,7 @@ public class MovingEntity : MonoBehaviour
         transform.eulerAngles = new Vector3(0, Degres, 0);
     }
 
-    public void OnBeat()
+    public virtual void OnBeat()
 	{
         Beat = true;
     }

@@ -7,9 +7,8 @@ public class PlayerController : MonoBehaviour
    public int HorizontalValue;
    public int VerticalValue;
 
-    float InputTimer;
+ 
     public float DesiredInputTimer;
-    bool CanMove = false;
     public Grid grid;
 
     public AudioSource Sound;
@@ -24,7 +23,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         transform.position = grid.GetCasePosition(0,0);
-        CanMove = true;
     }
 
 

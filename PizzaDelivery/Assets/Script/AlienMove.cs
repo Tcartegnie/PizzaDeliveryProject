@@ -13,6 +13,12 @@ public class AlienMove : MovingEntity
        this.target = Target;
 	}
 
+
+	public override void OnBeat()
+	{
+		base.OnBeat();
+        MoveToPlayer();
+	}
 	void MoveToPlayer()
 	{
 
@@ -42,6 +48,5 @@ public class AlienMove : MovingEntity
     public override void OnDeath()
 	{
         base.OnDeath();
-        controller.onBeat -= MoveToPlayer;
 	}
 }
