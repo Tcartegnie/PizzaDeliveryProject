@@ -81,12 +81,8 @@ public class TimerController : MonoBehaviour
 
         if (GM.CanPlay && GameStart)
         {
-            ComputeMusicPosition();
-            //J'ai pas compris ça alors j'ai commenté, fin j'ai l'impression que songposition est faux et de toute façon OffBeatOffset était à zéro
-            //if (songposition > OffBeatOffset)
-            {
-                Metronome();
-            }
+            ComputeMusicPosition(); 
+            Metronome();
         }
 
         if(IsNearBeat())

@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
 	}
 	IEnumerator TransitionScene()
 	{
-		yield return StartCoroutine( screen.fade());
+		yield return StartCoroutine(screen.fade());
 		grid.InitGrid();
 		yield return null;
 		InitGame();
