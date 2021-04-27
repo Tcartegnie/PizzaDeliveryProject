@@ -24,10 +24,13 @@ public class Attack : MonoBehaviour
 
 	public void CallAttack()
 	{
-        if (CanAttack && timer.IsNearBeat())
+        if (CanAttack && OnBeat)
         {
             CheckCase();
         }
+        Debug.Log( "CanAttack : " + CanAttack);
+        Debug.Log("timer : " + timer.IsNearBeat());
+        Debug.Log("OnBeat : " + OnBeat);
     }
 
     void CheckCase() 

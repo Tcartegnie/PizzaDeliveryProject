@@ -13,7 +13,6 @@ public class AlienAttack : Attack
 	{
 		base.Init(timer, grid, target);
         timer.onBeat += AddBeat;
-        timer.onBeat += CallAttack;
         this.target = target;
         OnBeat = false;
     }
@@ -29,6 +28,7 @@ public class AlienAttack : Attack
             if (BeatCount >= 3)
             {
                 OnBeat = true;
+                CallAttack();
                 BeatCount = 0;
             }
         }
@@ -38,7 +38,6 @@ public class AlienAttack : Attack
     public override void OnDeath()
 	{
         base.OnDeath();
-        timer.onBeat -= CallAttack;
         timer.onBeat -= AddBeat;
 	}
 

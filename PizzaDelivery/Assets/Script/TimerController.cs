@@ -113,7 +113,7 @@ public class TimerController : MonoBehaviour
     public bool IsNearBeat()
     {
         //Bon j'ai fait des tests et en vrai on a envie de se dire "ouais l'user blabla il appuie toujours après" mais en vrai j'ai l'impression qu'on anticipe plus qu'autre chose, du coup j'ai mis ça et ça marche beaucoup mieux je trouve, ça 
-        return CurrentBeatTimer > GetSecPerBeat() - BeatMargin;
+             return CurrentBeatTimer > GetSecPerBeat() - BeatMargin;
     }
 
     void ComputeMusicPosition()
