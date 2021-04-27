@@ -13,7 +13,8 @@ public class AlienAttack : Attack
 	{
 		base.Init(timer, grid, target);
         timer.onBeat += AddBeat;
-       this.target = target;
+        timer.onBeat += CallAttack;
+        this.target = target;
         OnBeat = false;
     }
 	public void AddBeat()

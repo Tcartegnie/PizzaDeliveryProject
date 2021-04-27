@@ -18,7 +18,7 @@ public class Attack : MonoBehaviour
 	{
         this.timer = timer;
         this.grid = grid;
-        timer.onBeat += CallAttack;
+   
         CanAttack = true;
     }
 
