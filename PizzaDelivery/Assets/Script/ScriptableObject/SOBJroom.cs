@@ -26,23 +26,5 @@ public class SOBJroom : ScriptableObject
 	public List<Vector2> Enemies = new List<Vector2>();
 }
 
-[Serializable]
-[CreateAssetMenu(fileName = "Object", menuName = "ScriptableObjects/Object", order = 2)]
-public class SOBJObject : ScriptableObject
-{
-	public TypeCrate objtype;
-	public GameObject obj;
-}
 
-[Serializable]
-[CreateAssetMenu(fileName = "Objectlist", menuName = "ScriptableObjects/Objectlist", order = 3)]
-public class SOBJObjectList : ScriptableObject
-{
-	public List<SOBJObject> objects = new List<SOBJObject>();
 
-	public GameObject GetObjByType(TypeCrate type)
-	{
-	 return	objects.Find(obj => obj.objtype == type).obj;
-	}
-
-}

@@ -12,12 +12,14 @@ public class Attack : MonoBehaviour
     public LayerMask RayCastMask;
     public bool OnBeat = true;
     public bool CanAttack = true;
+    public Animator anim;
 
     public virtual void Init(TimerController timer, Grid grid, Transform target)
 	{
         this.timer = timer;
         this.grid = grid;
         timer.onBeat += CallAttack;
+        CanAttack = true;
     }
 
 	public void CallAttack()
@@ -38,6 +40,7 @@ public class Attack : MonoBehaviour
             if (HitInfo.transform.GetComponentInParent<EntityState>() != null)
             {
                 HitInfo.transform.GetComponentInParent<EntityState>().TakeHit();
+                anim.SetTrigger("Attack");
             }
 		}
 	}

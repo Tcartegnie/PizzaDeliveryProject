@@ -17,6 +17,7 @@ public class MovingEntity : MonoBehaviour
     bool CanMove;
     public bool Beat;
     public TimerController controller;
+    public Animator anim;
 	// Start is called before the first frame update
     public virtual void Start()
 	{
@@ -42,7 +43,7 @@ public class MovingEntity : MonoBehaviour
         CurrentXPosition = (int)StartPosition.x;
         CurrentZPosition = (int)StartPosition.y;
         ClampPosition();
-        transform.position = grid.GetCasePosition(CurrentXPosition, CurrentZPosition);
+        transform.position = new Vector3(grid.GetCasePosition(CurrentXPosition, CurrentZPosition).x,-1, grid.GetCasePosition(CurrentXPosition, CurrentZPosition).z);
         type = grid.GetCaseType(CurrentXPosition, CurrentZPosition);
         CanMove = true;
     }
@@ -87,8 +88,9 @@ public class MovingEntity : MonoBehaviour
             grid.SetCaseAccesibility(CurrentXPosition, CurrentZPosition, true);
             AddPosition(x, z);
             ClampPosition();
-            transform.position = grid.GetCasePosition(CurrentXPosition, CurrentZPosition);
+            transform.position = new Vector3(grid.GetCasePosition(CurrentXPosition, CurrentZPosition).x,-1, grid.GetCasePosition(CurrentXPosition, CurrentZPosition).z);
             grid.SetCaseAccesibility(CurrentXPosition, CurrentZPosition, false);
+            anim.SetTrigger("Move");
         }
         Beat = false;
     }

@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Animations;
 using UnityEngine;
 
 public class PlayerMove : MovingEntity
 {
+
 	public override void Start()
 	{
 		base.Start();
@@ -14,6 +16,7 @@ public class PlayerMove : MovingEntity
 		if (controller.IsNearBeat())
 		{
 			base.MoveCharacter(x, z, rotate);
+				
 			if (type == CaseType.Exit)
 			{
 				Gm.Victory();
