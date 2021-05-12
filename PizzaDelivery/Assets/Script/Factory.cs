@@ -9,7 +9,8 @@ public class Factory : MonoBehaviour
 	public TimerController time;
 	public GameManager GM;
 	public GameObject Ennemy;
-	public Transform Target;
+	public MovingEntity Player;
+	public ParticleEmmiter emmiter;
 	List<GameObject> obj;
 	
    public GameObject InstanceObject(TypeCrate type, Vector3 position)
@@ -52,13 +53,11 @@ public class Factory : MonoBehaviour
 
 	public GameObject InstanciateEnnemy(Vector3 position,Transform parent)
 	{
-		
 		GameObject GO = InstanceObject(Ennemy, position, parent);
 		GO.GetComponent<EntityState>().Init(grid,GM);
-		GO.GetComponent<AlienMove>().Init(position, grid, GM, time, Target);
-		GO.GetComponent<AlienAttack>().Init(time,grid,Target);
-		Vector3 test = grid.GetCasePosition((int)position.x, (int)position.z);
-		GO.transform.position = new Vector3(test.x,0,test.z);
+		GO.GetComponent<AlienMove>().Init(position, grid, GM, time, Player);
+		GO.GetComponent<AlienAttack>().Init(time,grid, Player.transform);
+		GO.GetComponent<PlayerParticleCaller>().SetParticleEmmiter(emmiter);
 		return GO;
 	}
 

@@ -20,10 +20,6 @@ public class PlayerController : MonoBehaviour
     public PlayerMove entity;
     public GameManager GM;
     // Start is called before the first frame update
-    void Start()
-    {
-        transform.position = grid.GetCasePosition(0,0);
-    }
 
 
  
@@ -62,17 +58,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
         if(GM.CanPlay)
 		{
             CallInput();
-		}
-
-        
+		}        
     }
-
- 
-
 
 	public void MoveCharacter(int x, int z, float rotate)
 	{
@@ -81,14 +71,12 @@ public class PlayerController : MonoBehaviour
             GM.AddMultiplicator();
             GM.AddScore();
             Sound.PlayOneShot(VictorySound);
-            entity.MoveCharacter(x, z, rotate);
-         
         }
         else
 		{
             GM.RestMultiplicator();
 		}
-     
+        entity.MoveCharacter(x, z, rotate);
     }
 
 

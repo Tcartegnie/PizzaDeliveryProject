@@ -6,52 +6,86 @@ public class BeatDisplay : MonoBehaviour
 {
     public RectTransform BeatRect;
 
-    public List<RectTransform> Rects;
+    public List<RectTransform> Rects = new List<RectTransform>();
+    public List<GameObject> Lines = new List<GameObject>();
     public GameObject BeatLine;
 
 
     public TimerController controller;
     public float spb;
     public bool IsStarted = false;
+    public int LineNumber;
+
+    bool PlayMusic;
     // Start is called before the first frame update
-    void Start()
-    {
-      
-    }
 
-   
- 
 
-    public void OnBeat()
+    public void TurnOnUI()
 	{
-        //InstantiateBeat();
+        gameObject.SetActive(true);
 	}
 
-    public void InstantiateBeat()
+    public void TurnOffUI()
 	{
+        gameObject.SetActive(false);
+    }
 
-		controller.onBeat += OnBeat;
-		spb = controller.BeatMargin;
-		for (int i = 0; i < 2; i++)
+   public void StartMusic()
+	{
+        spb = controller.GetBeatTime();
+        ClearList();
+        InstantiateBeats();
+        PlayMusic = true;
+    }
+
+
+    public void InstantiateBeats()
+	{
+        for (int i = 0; i < LineNumber; i++)
+        {
+            InstantiateBeat(i);
+        }
+    }
+
+	public void Update()
+	{
+		if(PlayMusic)
+		{
+            foreach (GameObject GO in Lines)
+			{
+                GO.GetComponent<BeatObject>().Move(spb);
+			}
+        }
+	}
+
+    public void SetObjectOnLine()
+	{
+        for (int i = 0; i < Lines.Count;i++)
+		{
+            for (int j = 0; j < Rects.Count; j++)
+            {
+                Lines[i].GetComponent<BeatObject>().SetPositionOnLine((1f/LineNumber) * i);
+            }
+        }
+	}
+
+	public void InstantiateBeat(int CurrentLine)
+	{
+		for (int i = 0; i < Rects.Count; i++)
 		{
 			GameObject GO = Instantiate(BeatLine, Rects[i]);
-			GO.GetComponent<RectTransform>().pivot.Set(0.5f, 0);
-			GO.GetComponent<RectTransform>().rect.Set(0, 0, 0, 0);
-			StartCoroutine(MoveLine(GO.transform, Rects[i], BeatRect));
+            GO.GetComponent<BeatObject>().Init(Rects[i].position, BeatRect.position, (1f / LineNumber) * CurrentLine) ;
+            Lines.Add(GO);
 		}
+	} 
 
-	}
 
-    IEnumerator MoveLine(Transform GO,Transform Line,Transform destination)
+    public void ClearList()
 	{
-        Vector3 depart = Line.position;
-        Vector3 Arrival = destination.position;
-        for(float i = 0; i < 1; i+= Time.deltaTime/spb)
+        for(int i  = 0; i < Lines.Count;i++)
 		{
-            GO.position = Vector3.Lerp(new Vector3(depart.x,0,0),new Vector3(Arrival.x,0,0),i);
-            yield return null;
+            Destroy(Lines[i]);
 		}
-        GO.position = Vector3.Lerp(new Vector3(depart.x, 0, 0), new Vector3(Arrival.x, 0, 0), 1);
-      StartCoroutine(MoveLine(GO,Line,destination));
-    }
+        Lines.Clear();
+	}
 }

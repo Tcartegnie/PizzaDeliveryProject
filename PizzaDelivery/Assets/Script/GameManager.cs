@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour
 	public void TrueEnd()
 	{
 		screen.SetText(TrueVictroryText);
-		StartCoroutine(screen.fade());
+		StartCoroutine(screen.fadeIn());
 	}
 
 	public void EndGame()
@@ -133,20 +133,20 @@ public class GameManager : MonoBehaviour
 	public void StartGame()
 	{
 		CanPlay = true;
-	
+		InitGame();
 	}
 
 
 	public void InitGame()
 	{
 		Player.InitEntity();
-		StartRect.gameObject.SetActive(true);
 	}
 	IEnumerator TransitionScene()
 	{
-		yield return StartCoroutine(screen.fade());
+		yield return StartCoroutine(screen.fadeIn());
 		grid.InitGrid(0);
-		yield return StartCoroutine(screen.UnFade());
+		yield return StartCoroutine(screen.FadeOut());
+		InitGame();
 		StartGame();
 	}
 

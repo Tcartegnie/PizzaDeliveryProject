@@ -19,10 +19,11 @@ public class PlayerAttack : Attack
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
+			CallAttack();
+			HitSource.PlayOneShot(HitClip);
 			if (timer.IsNearBeat())
 			{
-				CallAttack();
-				HitSource.PlayOneShot(HitClip);
+				CanAttack = true;
 			}
 			else
 			{

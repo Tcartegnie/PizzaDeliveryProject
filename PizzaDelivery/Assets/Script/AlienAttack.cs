@@ -18,15 +18,16 @@ public class AlienAttack : Attack
     }
 	public void AddBeat()
 	{
-        if (Vector3.Distance(target.position, transform.position) <= 1)
+        if (Vector3.Distance(target.position, transform.position) <= 1.2f)
         {
             if (BeatCount < BeatCountMax)
             {
                 BeatCount++;
             }
 
-            if (BeatCount >= 3)
+            if (BeatCount >= BeatCountMax)
             {
+                CanAttack = true;
                 OnBeat = true;
                 CallAttack();
                 BeatCount = 0;
@@ -35,10 +36,9 @@ public class AlienAttack : Attack
        
 	}
 
-    public override void OnDeath()
+	private void OnDestroy()
 	{
-        base.OnDeath();
+        OnDeath();
         timer.onBeat -= AddBeat;
-	}
-
+    }
 }

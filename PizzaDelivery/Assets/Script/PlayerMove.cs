@@ -5,24 +5,22 @@ using UnityEngine;
 
 public class PlayerMove : MovingEntity
 {
-
-	public override void Start()
+	public void Start()
 	{
-		base.Start();
-
+		controller.onBeat += OnBeat;
+	}
+	public override void Init(Vector3 Position, Grid grid, GameManager gM, TimerController controller, MovingEntity Target)
+	{
+		base.Init(Position, grid, gM, controller, Target);
 	}
 	public override void MoveCharacter(int x, int z, float rotate)
 	{
-		if (controller.IsNearBeat())
-		{
 			base.MoveCharacter(x, z, rotate);
-				
 			if (type == CaseType.Exit)
 			{
 				Gm.Victory();
 				type = CaseType.Empty;
 			}
-		}
 	}
 
 }

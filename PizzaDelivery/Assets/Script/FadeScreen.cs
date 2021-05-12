@@ -8,7 +8,7 @@ public class FadeScreen : MonoBehaviour
 
 	public Image ScreenRect;
 	public Text Victorytext;
-	public float FadeDuration;
+	public FadeUI fade;
 
 	public void Update()
 	{
@@ -23,32 +23,16 @@ public class FadeScreen : MonoBehaviour
 	}
 
 
-	public IEnumerator fade()
+	public IEnumerator fadeIn()
 	{
-		ScreenRect.color = new Color(ScreenRect.color.r, ScreenRect.color.g, ScreenRect.color.b, 0);
-		Victorytext.color = new Color(Victorytext.color.r, Victorytext.color.g, Victorytext.color.b, 0);
-		for (float i = 0; i < 1;i+= Time.deltaTime/ FadeDuration) 
-		{
-			ScreenRect.color = new Color(ScreenRect.color.r, ScreenRect.color.g, ScreenRect.color.b, i);
-			Victorytext.color = new Color(Victorytext.color.r, Victorytext.color.g, Victorytext.color.b, i);
-			yield return null;
-		}
-		ScreenRect.color = new Color(ScreenRect.color.r, ScreenRect.color.g, ScreenRect.color.b,1);
-		Victorytext.color = new Color(Victorytext.color.r, Victorytext.color.g, Victorytext.color.b,1);
+		StartCoroutine(fade.fadeIn(ScreenRect));
+		yield return StartCoroutine(fade.fadeIn(Victorytext));
 	}
 
 
-	public IEnumerator UnFade()
+	public IEnumerator FadeOut()
 	{
-		ScreenRect.color = new Color(ScreenRect.color.r, ScreenRect.color.g, ScreenRect.color.b, 1);
-		Victorytext.color = new Color(Victorytext.color.r, Victorytext.color.g, Victorytext.color.b, 1);
-		for (float i = 1; i > 0; i -= Time.deltaTime / FadeDuration)
-		{
-			ScreenRect.color = new Color(ScreenRect.color.r, ScreenRect.color.g, ScreenRect.color.b, i);
-			Victorytext.color = new Color(Victorytext.color.r, Victorytext.color.g, Victorytext.color.b, i);
-			yield return null;
-		}
-		ScreenRect.color = new Color(ScreenRect.color.r, ScreenRect.color.g, ScreenRect.color.b, 0);
-		Victorytext.color = new Color(Victorytext.color.r, Victorytext.color.g, Victorytext.color.b, 0);
+		StartCoroutine(fade.fadeOut(ScreenRect));
+		yield return StartCoroutine(fade.fadeOut(Victorytext));
 	}
 }

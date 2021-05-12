@@ -23,7 +23,7 @@ public class Grid : MonoBehaviour
 
     public List<SOBJroom> Rooms = new List<SOBJroom>();
     SOBJroom CurrentRoom;
-    List<GameObject> ObjectOnFloor = new List<GameObject>();
+    public List<GameObject> ObjectOnFloor = new List<GameObject>();
     public SOBJroom VisoRoom;
     Case[,] grid;
     public Vector2 VictoryGrid;
@@ -47,11 +47,16 @@ public class Grid : MonoBehaviour
         }
         else
 		{
-            CurrentRoom = VisoRoom;
-            DestroyGrid();
-            CreatGrid(CurrentRoom,0);
-		}
+            LoadTestRoom();
+        }
 	}
+
+    void LoadTestRoom()
+	{
+        CurrentRoom = VisoRoom;
+        DestroyGrid();
+        CreatGrid(CurrentRoom, 0);
+    }
 
 	public void Start()
 	{
@@ -116,7 +121,8 @@ public class Grid : MonoBehaviour
     public void CreatGrid(SOBJroom Room, int BeginOffset)
 	{
         currentTransform = Instantiate( new GameObject(),transform,true).transform;
-       
+        player.transform.SetParent(currentTransform);
+ 
         Vector2 GridLenght = Room.GridLenght;
         List<Vector2> victoryCase = Room.VictoryCase;
         grid = new Case[(int)GridLenght.x,(int)GridLenght.y];
@@ -132,8 +138,10 @@ public class Grid : MonoBehaviour
                 ObjectOnFloor.Add(go);
             }
         }
-
-
+        player.SetCharacterPositionData(Room.StartCase.x, Room.StartCase.y);
+        player.SetCharacterPosition();
+        player.InitEntity();
+        player.GetComponent<StatePlayer>().InitLife();
         for (int i = 0; i < victoryCase.Count; i++)
 		{
             grid[(int)victoryCase[i].x-1, (int)victoryCase[i].y-1].type = CaseType.Exit;
@@ -141,7 +149,7 @@ public class Grid : MonoBehaviour
 
         for (int i = 0; i < Room.Objects.Count; i++)
         {
-            GameObject GO = factory.InstanceObject(Room.Objects[i].type, new Vector3(Room.Objects[i].position.x, -1, Room.Objects[i].position.y),currentTransform);
+            GameObject GO = factory.InstanceObject(TypeCrate.Baril, new Vector3(Room.Objects[i].position.x, -1, Room.Objects[i].position.y),currentTransform);
             SetCaseAccesibility((int)Room.Objects[i].position.x,(int)Room.Objects[i].position.y,false);
             ObjectOnFloor.Add(GO);
         }
@@ -188,7 +196,6 @@ public class Grid : MonoBehaviour
             currentTransform.position = Vector3.Lerp(Depart, Arrival, i);
             yield return null;
         }
-        player.SetCharacterPosition((int)GetGridLenght().x / 2, 0);
         gm.StartGame();
     }
 

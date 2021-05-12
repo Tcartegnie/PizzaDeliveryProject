@@ -6,10 +6,9 @@ public class MovingEntity : MonoBehaviour
 {
     public Grid grid;
    
-   public int CurrentXPosition;
+    public int CurrentXPosition;
     public int CurrentZPosition;
 
-    public Vector2 StartPosition;
     protected CaseType type;
 
     public GameManager Gm;
@@ -18,49 +17,52 @@ public class MovingEntity : MonoBehaviour
     public bool Beat;
     public TimerController controller;
     public Animator anim;
+    public float TranstionTime;
+    public PlayerParticleCaller particlCallser;
 	// Start is called before the first frame update
-    public virtual void Start()
-	{
-        if (gameObject.tag == "Player")
-		{
-            controller.onBeat += OnBeat;
-            InitEntity();
-        }
-	}
-
+  
 	// Update is called once per frame
-    public virtual void Init(Vector3 Position,Grid grid,GameManager gM, TimerController controller, Transform Target)
+    public virtual void Init(Vector3 Position,Grid grid,GameManager gM, TimerController controller, MovingEntity Target)
 	{
         this.grid = grid;
         Gm = gM;
-        StartPosition = new Vector2(Position.x,Position.z);
+        CurrentXPosition = (int)Position.x;
+        CurrentZPosition = (int)Position.z;
         this.controller = controller;
         this.controller.onBeat += OnBeat;
         InitEntity();
 	}
 	public void InitEntity()
 	{
-        CurrentXPosition = (int)StartPosition.x;
-        CurrentZPosition = (int)StartPosition.y;
         ClampPosition();
-        transform.position = new Vector3(grid.GetCasePosition(CurrentXPosition, CurrentZPosition).x,-1, grid.GetCasePosition(CurrentXPosition, CurrentZPosition).z);
         type = grid.GetCaseType(CurrentXPosition, CurrentZPosition);
         CanMove = true;
     }
-    public void AddPosition(int x, int z)
-    {
-        CurrentXPosition += x;
-        CurrentZPosition += z;
-    }
-
+   
     public virtual void MoveCharacter(int x, int z, float rotate)
 	{
-        if (Gm.CanPlay && CanMove && Beat)
+        if (Gm.CanPlay && CanMove)
         {
-            Move(x, z);
+            Move(CurrentXPosition + x, CurrentZPosition + z);
             RotatePerso(rotate);
         }
     }
+
+    public void MoveOnRandomPoint()
+	{
+        int x = Random.Range(0,(int)grid.GetGridLenght().x);
+        int y = Random.Range(0,(int)grid.GetGridLenght().y);
+
+        if(grid.GetCaseAccesibility(x,y))
+		{
+            SetCharacterPositionData(x,y);
+            SetCharacterPosition();
+		}
+        else
+		{
+            MoveOnRandomPoint();
+		}
+	}
 
     public void SetCUrrentCaseType(CaseType type)
     {
@@ -81,26 +83,38 @@ public class MovingEntity : MonoBehaviour
 
     public void Move(int x, int z)
     {
-        type = grid.GetCaseType(CurrentXPosition + x, CurrentZPosition + z);
-
-        if (grid.GetCaseAccesibility(CurrentXPosition + x, CurrentZPosition + z))
+        if (grid.GetCaseAccesibility(x,z))
         {
-            grid.SetCaseAccesibility(CurrentXPosition, CurrentZPosition, true);
-            AddPosition(x, z);
-            ClampPosition();
-            transform.position = new Vector3(grid.GetCasePosition(CurrentXPosition, CurrentZPosition).x,-1, grid.GetCasePosition(CurrentXPosition, CurrentZPosition).z);
-            grid.SetCaseAccesibility(CurrentXPosition, CurrentZPosition, false);
+            SetCharacterPositionData(x, z);
+
+
+
+            StartCoroutine(Transition());
+
             anim.SetTrigger("Move");
         }
         Beat = false;
     }
 
-    public void SetCharacterPosition(int x, int y)
+    public void SetCharacterPositionData(int x, int z)
 	{
-       transform.position = grid.GetCasePosition(x, y);
-        CurrentXPosition = x;
-        CurrentZPosition = y;
+        grid.SetCaseAccesibility(CurrentXPosition, CurrentZPosition, true);
+        grid.SetCaseAccesibility(x, z, false);
 
+        CurrentXPosition = x;
+        CurrentZPosition = z;
+
+        type = grid.GetCaseType(CurrentXPosition, CurrentZPosition);
+
+        ClampPosition();
+
+
+    }
+
+    public void SetCharacterPosition()
+	{
+        Vector3 position = grid.GetCasePosition(CurrentXPosition, CurrentZPosition);
+        transform.position = new Vector3(position.x,-1, position.z);
     }
 
     public void RotatePerso(float Degres)
@@ -117,6 +131,25 @@ public class MovingEntity : MonoBehaviour
 	{
         CanMove = false;
         SetCurrentAccesibility(true);
+    }
+
+	private void OnDestroy()
+	{
         controller.onBeat -= OnBeat;
     }
+
+	public IEnumerator Transition()
+	{
+        Vector3 Depart = transform.position;
+        Vector3 arrival = new Vector3(grid.GetCasePosition(CurrentXPosition,CurrentZPosition).x,-1, grid.GetCasePosition(CurrentXPosition, CurrentZPosition).z); 
+        for(float i = 0; i < 1f; i+= Time.deltaTime/TranstionTime)
+		{
+            transform.position = Vector3.Lerp(Depart, arrival, i);
+            if (i >= (Time.deltaTime / TranstionTime) / 2)
+			{
+                particlCallser.CallWalkParticle();
+            }
+            yield return null;
+		}
+	}
 }

@@ -12,9 +12,9 @@ public class EntityState : MonoBehaviour
     public Grid grid;
     public GameManager GM;
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
-        ActualPV = PVmax;
+        InitLife();
     }
 
     public void Init(Grid grid, GameManager GM)
@@ -23,7 +23,12 @@ public class EntityState : MonoBehaviour
         this.GM = GM;
     }
 
-   public void TakeHit()
+    public virtual void InitLife()
+    {
+        ActualPV = PVmax;
+    }
+
+    public virtual void TakeHit()
 	{
         ActualPV -= 1;
         CheckPV();
@@ -40,14 +45,17 @@ public class EntityState : MonoBehaviour
 
     public virtual void OnDeath()
 	{
-        if(gameObject.tag != "Player")
+        attack.OnDeath();
+        move.OnDeath();
+        if (gameObject.tag != "Player")
 		{
             GM.AddMultiplicator();
             GM.AddScore(ScoreOnDeath);
-		}
-        attack.OnDeath();
-        move.OnDeath();
-        grid.removeEntity(gameObject);
-        Destroy(gameObject);
+            grid.removeEntity(gameObject);
+            Destroy(gameObject);
+        }
+   
+ 
+   
 	}
 }

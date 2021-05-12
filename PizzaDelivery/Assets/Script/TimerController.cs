@@ -18,6 +18,8 @@ public class TimerController : MonoBehaviour
     public float BeatMargin;
     public AudioSource Music;
 
+    public SOBJMusicList MusicList;
+
     public delegate void Beat();
 
     public Beat onBeat;
@@ -29,6 +31,9 @@ public class TimerController : MonoBehaviour
     public RectTransform BluePicture;
 
     public bool GameStart = false;
+
+
+    public BeatDisplay beatDisplayer;
     public float GetPositonInSong()
     {
         return (float)(AudioSettings.dspTime - dspsongTime - (OffBeatOffset));
@@ -51,6 +56,7 @@ public class TimerController : MonoBehaviour
     {
         GM.onVictory += OnEndGame;
         GM.onDefeat += OnEndGame;
+       
       //  onBeat += beatDisplay.OnBeat;
     }
 
@@ -63,12 +69,44 @@ public class TimerController : MonoBehaviour
         InputCoolDown = 0;
         GameStart = true;
         Music.Play();
-       // beatDisplay.InstantiateBeat();
+        beatDisplay.StartMusic();
     }
+
+    public void SetMusic(SOBJmusic music)
+	{
+        StopMusic();
+        SongBPM = music.BPM;
+        BeatMargin = music.BeatMargin;
+        Music.clip = music.clip;
+        StartMusic();
+    }
+
+    public void PauseMusic()
+	{
+        Music.Pause();
+        GameStart = false;
+    }
+
+    public void ContinueMusic()
+	{
+        Music.UnPause();
+        GameStart = true;
+    }
+
+    public void StopMusic()
+	{
+        Music.Stop();
+        GameStart = false;
+    }
+
+    public void ChangeMusic()
+	{
+
+	}
 
     public float GetSecPerBeat()
 	{
-      return 60f / SongBPM;
+      return 60f /SongBPM ;
     }
 
 	private void Update()
@@ -78,7 +116,8 @@ public class TimerController : MonoBehaviour
             if(Input.anyKeyDown)
 			{
                 Startrect.gameObject.SetActive(false);
-                StartMusic();
+                SetMusic(MusicList.GetRandomSound());
+                beatDisplay.StartMusic();
             }
 		}
 
@@ -86,15 +125,6 @@ public class TimerController : MonoBehaviour
         {
             ComputeMusicPosition(); 
             Metronome();
-        }
-
-        if(IsNearBeat())
-		{
-            BluePicture.gameObject.SetActive(true);
-        }
-        else
-		{
-            BluePicture.gameObject.SetActive(false);
         }
     }
 
@@ -105,15 +135,18 @@ public class TimerController : MonoBehaviour
             if (CurrentBeatTimer <= 0f)
             {
                 IsBeating();
-                //Vu que CurrentBeatTimer n'est jamais pile à zéro on perd des millisecondes si on remet à GetSecPerBeat, du coup, je rajoute SecPerBeat pour équilibrer. C'est pas un souci
                 CurrentBeatTimer += SecPerBeat;
             }
     }
 
     public bool IsNearBeat()
     {
-        //Bon j'ai fait des tests et en vrai on a envie de se dire "ouais l'user blabla il appuie toujours après" mais en vrai j'ai l'impression qu'on anticipe plus qu'autre chose, du coup j'ai mis ça et ça marche beaucoup mieux je trouve, ça 
-             return CurrentBeatTimer > GetSecPerBeat() - BeatMargin;
+      return CurrentBeatTimer > GetBeatTime();
+    }
+
+    public float GetBeatTime()
+	{
+      return   GetSecPerBeat() - BeatMargin;
     }
 
     void ComputeMusicPosition()
